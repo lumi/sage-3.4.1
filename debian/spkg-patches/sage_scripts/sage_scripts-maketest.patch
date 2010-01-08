@@ -1,0 +1,21 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237065047 14400
+# Node ID 741d430fef5f9bf9a9515ce8af1764a7fee0f93e
+# Parent  f8b3778e9e2bc87de1c363602437f5c505b76fc4
+Avoid permission denied error message when SAGE_TESTDIR is set by the user.
+
+diff -r f8b3778e9e2b -r 741d430fef5f sage-maketest
+--- a/sage-maketest	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-maketest	Sat Mar 14 17:10:47 2009 -0400
+@@ -37,7 +37,9 @@
+ # TODO -- skip this for now.
+ grep "ERROR occurred" "$DSAGE_TEST_LOG" | tee -a "$SAGE_TEST_LOG"
+ 
+-cat "$SAGE_TEST_LOG" >> "$SAGE_ROOT"/test.log
++if [ "$SAGE_TESTDIR" = "$SAGE_ROOT/tmp" ]; then
++    cat "$SAGE_TEST_LOG" >> "$SAGE_ROOT"/test.log
++fi
+ 
+ echo "Please see $SAGE_TEST_LOG for the complete log from this test."
+ 

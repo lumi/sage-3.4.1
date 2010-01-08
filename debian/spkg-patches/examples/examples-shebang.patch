@@ -1,0 +1,14 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217648965 14400
+# Node ID 6a5e03896cab9ddcc33512108998edf4064c5470
+# Parent  376bd6ed45170c6f722bab2c1b38024a00f85638
+Fix missing #! line in examples spkg.
+
+diff -r 376bd6ed4517 -r 6a5e03896cab programming/standalone_scripts/python/test
+--- a/programming/standalone_scripts/python/test	Fri Jul 11 11:31:45 2008 -0700
++++ b/programming/standalone_scripts/python/test	Fri Aug 01 23:49:25 2008 -0400
+@@ -1,2 +1,3 @@
++#!/bin/sh
+ ./binom 5 2
+ ./factor 2005

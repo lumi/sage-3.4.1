@@ -1,0 +1,2 @@
+debian/sage usr/bin
+debian/sage_fortran usr/lib/sagemath/local/bin

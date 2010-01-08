@@ -1,0 +1,21 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1240710524 14400
+# Node ID f28c16dca8064b319a16edf0bc4a2b8589dcd18e
+# Parent  47c0b9926a48cb2c0aaf1ad3ff283dda020a504e
+Add path to Cython headers to CYTHON_INCLUDE_DIRS.
+
+diff -r 47c0b9926a48 -r f28c16dca806 setup.py
+--- a/setup.py	Sat Apr 25 21:44:05 2009 -0400
++++ b/setup.py	Sat Apr 25 21:48:44 2009 -0400
+@@ -256,7 +256,10 @@
+ ###### Dependency checking
+ #############################################
+ 
+ CYTHON_INCLUDE_DIRS=[ SAGE_LOCAL + '/lib/python2.5/site-packages/Cython/Includes/' ]
++if os.environ.has_key('SAGE_DEBIAN'):
++    CYTHON_INCLUDE_DIRS += [ '/usr/share/python-support/cython/Cython/Includes/',
++                             '/usr/share/pyshared/Cython/Includes/' ]
+ 
+ # matches any dependency
+ import re

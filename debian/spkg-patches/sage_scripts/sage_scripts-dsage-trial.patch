@@ -1,0 +1,19 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237654521 14400
+# Node ID 97e0578b9bf459d1e64403917e98af1cef276ca1
+# Parent  d3321ff8899c079e09c082243b4a51a2ba2be244
+Fix sage-dsage-trial to correctly handled system Python != Sage Python.
+
+diff -r d3321ff8899c -r 97e0578b9bf4 sage-dsage-trial
+--- a/sage-dsage-trial	Wed Mar 11 21:58:33 2009 -0700
++++ b/sage-dsage-trial	Sat Mar 21 12:55:21 2009 -0400
+@@ -18,7 +18,7 @@
+ fi 
+ 
+ echo "This script will run the unit tests for DSage"
+-trial --temp-directory="$SAGE_TESTDIR/dsage-trial"  sage.dsage
++python $(which trial) --temp-directory="$SAGE_TESTDIR/dsage-trial" sage.dsage
+ 
+ if [ $? != 0 ]; then
+     echo "However, an ERROR occurred in the Distributed Sage unit tests."

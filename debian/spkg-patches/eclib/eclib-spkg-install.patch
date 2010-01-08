@@ -1,0 +1,35 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1216812416 14400
+# Node ID 4f6e20d0fe2bf2e3a138126973a3fe776d45d94b
+# Parent  d8586227400bf3252e8e9df85468e110f0298dd2
+Make eclib build for Debian packages.
+
+diff -r d8586227400b -r 4f6e20d0fe2b spkg-install
+--- a/spkg-install	Sat Jul 05 15:04:36 2008 -0700
++++ b/spkg-install	Wed Jul 23 07:26:56 2008 -0400
+@@ -17,12 +17,18 @@
+ rm -rf cremona eclib
+ 
+ cd "$CUR"/src
+-
+-NTL_PREFIX="$SAGE_LOCAL"
+-export NTL_PREFIX
+-
+-PARI_PREFIX="$SAGE_LOCAL"
+-export PARI_PREFIX
++if [ -n "$CFLAGS" ]; then
++    echo "CFLAGS = $CFLAGS"
++    unset CFLAGS
++fi
++if [ -z "$NTL_PREFIX" ]; then
++    NTL_PREFIX="$SAGE_LOCAL"
++    export NTL_PREFIX
++fi
++if [ -z "$PARI_PREFIX" ]; then
++    PARI_PREFIX="$SAGE_LOCAL"
++    export PARI_PREFIX
++fi
+ 
+ if [ "$UNAME" = "CYGWIN" ]; then
+     PICFLAG=""

@@ -1,0 +1,28 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1216965432 14400
+# Node ID 11cab9c577418a3bd05da70d9df1db955f585cfd
+# Parent  7adaf3166c3c1c7e0f6f462495622a75b4900c1d
+Don't try to build removed non-DFSG free arpack.
+
+diff -r 7adaf3166c3c -r 11cab9c57741 spkg-install
+--- a/spkg-install	Sat Apr 26 01:00:01 2008 -0400
++++ b/spkg-install	Fri Jul 25 01:57:12 2008 -0400
+@@ -15,17 +15,6 @@
+ fi
+ #####################################################
+ 
+-cp ./patches/setup.py.arpack arpack/setup.py
+-cp ./patches/arpack.py arpack
+-cd arpack
+-python setup.py install
+-
+-if [ $? -ne 0 ]; then 
+-    echo "Error building arpack \n"
+-    exit 1
+-fi
+-
+-cd ..
+ cd delaunay
+ python setup.py install
+ 

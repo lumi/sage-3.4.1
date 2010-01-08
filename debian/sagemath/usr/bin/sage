@@ -1,0 +1,11 @@
+#!/bin/sh
+export PATH=/usr/lib/sagemath/local/bin:/usr/lib/cdd-test:/usr/lib/palp:/usr/lib/eclib:"$PATH"
+export SINGULAR_DEFAULT_DIR=/usr/lib/singular
+export SINGULAR_BIN_DIR=/usr/lib/singular
+export MATPLOTLIBDATA=/usr/share/matplotlib/mpl-data/
+export RHOME=/usr/lib/R
+if [ -z "$SAGE_TESTDIR" ]; then
+    export SAGE_TESTDIR="$HOME/.sage/tests"
+fi
+exec /usr/lib/sagemath/sage "$@"
+

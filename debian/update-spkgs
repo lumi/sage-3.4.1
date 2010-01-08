@@ -1,0 +1,18 @@
+#!/bin/sh
+set -x
+set -e
+for spkgname in `ls debian/spkg-patches`; do
+    dir=$(cd spkg && ./standard/newest_version $spkgname)
+    spkg="$dir".spkg
+    dir_debian="$dir".debian
+    spkg_debian="$dir_debian".spkg
+    (cd spkg/standard && tar -xf $spkg)
+    (cd spkg/standard && mv $dir $dir_debian)
+    for patch in `ls debian/spkg-patches/$spkgname`; do
+	patchdir=`pwd`/debian/spkg-patches/$spkgname
+	(cd spkg/standard/$dir_debian && patch -p1 <$patchdir/$patch)
+    done
+    (cd spkg/standard && chmod +x $dir_debian/spkg-install)
+    (cd spkg/standard && tar -cjf $spkg_debian $dir_debian)
+    rm -rf spkg/standard/$dir_debian
+done

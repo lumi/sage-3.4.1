@@ -1,0 +1,39 @@
+Source: sagemath
+Section: math
+Priority: optional
+Maintainer: Tim Abbott <tabbott@mit.edu>
+Homepage: http://sagemath.org/
+Build-Depends: @cdbs@, libflint-dev (>= 1.011), libiml-dev (>= 1.0.3), liblinbox-dev, python-matplotlib, libmpfr-dev, libmpfi-dev, libntl-dev, libpari-dev, python-all-dev (>= 2.5), cython (>= 0.11), libgivaro-dev, libgsl0-dev, libqd-dev, libgcrypt11-dev, libsingular-dev, scons, libsymmetrica-dev, libfplll-dev, r-base-dev, libatlas-base-dev, libm4ri-dev (>=0.0.20080521), libecm-dev, libgmp3-dev, gfortran, rsync, libzn-poly-dev, libboost-python1.35-dev, python-setuptools, libpolybori-dev, python-central (>= 0.6), time, python-sphinx, libgc-dev
+XS-Python-Version: 2.5
+Standards-Version: 3.8.0
+
+Package: sagemath
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, gap, singular, maxima-share, genus2reduction, lcalc, sympow, python-matplotlib, gfan, python-gd, mercurial, python-twisted, python-numpy, python-crypto, python-moinmoin, sqlite3, palp, ipython, python-gnutls, python-scipy, python-cvxopt, scons, r-base, gfortran, python-sqlalchemy, gmp-ecm, python-sympy, python-networkx, python-pexpect, cython, python-twisted-web2, pari-gp, pari-extra, tachyon, python-rpy, python-sympy, gap-guava, python-processing, python-polybori, libcdd-test, libjs-jquery, libsingular-dev, libiml0 (>= 1.0.3), time, python-sphinx, libjs-jquery, jsmath, jsmath-fonts, tinymce
+Recommends: imagemagick, r-recommended, gap-character-tables, python-gnuplot, python-openssl
+Suggests: valgrind, gdb
+XB-Python-Version: 2.5
+Description: Mathematics software written in Python
+ Sage is a mathematical software package with support for a wide range
+ of mathematics, including algebra, calculus, elementary to very
+ advanced number theory, cryptography, numerical computation,
+ commutative algebra, group theory, combinatorics, graph theory, and
+ exact linear algebra.
+ .
+ Sage integrates several dozen mathematical software packages, making
+ it possible to combine the best algorithms from several different
+ packages together in a single Sage program.
+ .
+ Much of the Sage core and the Sage interfaces are implemented in
+ Cython, helping Sage avoid the usual performance problems associated
+ with Python.
+ .
+ Sage has a friendly command-line interface based on iPython and a
+ web-based notebook interface which can run locally or connect to a
+ remote Sage server over the network.
+
+#python-zodb should be a dependency, but it is not installable on a
+#machine with python2.5 as the default python.  Since Sage still works
+#without it (albeit without access to some data files), I've decided
+#to upload without python-zodb on the dependency list, and fix this
+#once #472392 is closed).

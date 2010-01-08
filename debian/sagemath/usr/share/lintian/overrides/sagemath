@@ -1,0 +1,17 @@
+# These directories are required to exist by the Sage pexpect wrappers
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/matlab/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/sobj/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/genus2reduction/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/gnuplot/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/macaulay2/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/mathematica/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/singular/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/sage/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/maple/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/gap/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/kash/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/octave/user/
+sagemath: package-contains-empty-directory usr/share/sagemath/data/extcode/pari/user/
+
+# The other lintian warnings are generally upstream problems that I'm
+# working on getting fixed there.

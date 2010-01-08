@@ -1,0 +1,105 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217658921 14400
+# Node ID e126b9b3264474ea059d8f8c1ac0722205ff442d
+# Parent  f8b3778e9e2bc87de1c363602437f5c505b76fc4
+Fix #! line problems is sage_scripts spkg.
+
+diff -r f8b3778e9e2b -r e126b9b32644 sage-ipython
+--- a/sage-ipython	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-ipython	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,4 +1,4 @@
+-#!sage.bin 
++#!/usr/bin/env python
+ # -*- coding: utf-8 -*-
+ """
+ SAGE IPython startup script.
+diff -r f8b3778e9e2b -r e126b9b32644 sage-mirror
+--- a/sage-mirror	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-mirror	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ cd ..
+ echo "uploading"
+ 
+diff -r f8b3778e9e2b -r e126b9b32644 sage-mirror-darcs-scripts
+--- a/sage-mirror-darcs-scripts	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-mirror-darcs-scripts	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ cd _darcs/
+ rsync -axLH --rsh=ssh --delete -r -v  * was@modular.math.washington.edu:www/sage/dist/src/scripts-darcs/_darcs/
+ 
+diff -r f8b3778e9e2b -r e126b9b32644 sage-osx-open
+--- a/sage-osx-open	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-osx-open	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,2 +1,3 @@
++#!/bin/sh
+ unset LIBRARY_PATH LD_LIBRARY_PATH DYLD_LIBRARY_PATH
+ open  "$@"
+diff -r f8b3778e9e2b -r e126b9b32644 sage-preparse
+--- a/sage-preparse	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-preparse	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,4 +1,4 @@
+-#!sage.bin
++#!/usr/bin/env python
+ """
+ Preparse a .sage file and save the result to a .py file. 
+ 
+diff -r f8b3778e9e2b -r e126b9b32644 sage-pull
+--- a/sage-pull	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-pull	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,1 +1,2 @@
++#!/bin/sh
+ sage -hg pull http://www.sagemath.org/hg/scripts-main
+diff -r f8b3778e9e2b -r e126b9b32644 sage-push
+--- a/sage-push	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-push	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ hg status
+ hg diff
+ hg commit -m "New version"
+diff -r f8b3778e9e2b -r e126b9b32644 sage-run
+--- a/sage-run	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-run	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,4 +1,4 @@
+-#!sage.bin   
++#!/usr/bin/env python
+ 
+ import os, sys
+ 
+diff -r f8b3778e9e2b -r e126b9b32644 sage-run2
+--- a/sage-run2	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-run2	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,4 +1,4 @@
+-#!sage.bin   
++#!/usr/bin/env python
+ 
+ import os, sys
+ 
+diff -r f8b3778e9e2b -r e126b9b32644 sage-startuptime.py
+--- a/sage-startuptime.py	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-startuptime.py	Sat Aug 02 02:35:21 2008 -0400
+@@ -1,3 +1,4 @@
++#!/usr/bin/env python
+ ###########################################################
+ # Based on a script by Andrew Dalke: 
+ #    http://projects.scipy.org/pipermail/numpy-discussion/2008-July/035415.html
+diff -r f8b3778e9e2b sage-location
+--- a/sage-location	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-location	Sat Aug 02 10:24:41 2008 -0400
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env sage.bin
++#!/usr/bin/env python
+ 
+ import os
+ 
+diff -r a503b4dac878 dsage_setup.py
+--- a/dsage_setup.py	Sat Aug 02 10:34:06 2008 -0400
++++ b/dsage_setup.py	Sat Aug 02 10:34:26 2008 -0400
+@@ -1,3 +1,4 @@
++#!/usr/bin/env python
+ ############################################################################
+ #                                                                     
+ #   DSAGE: Distributed SAGE                     

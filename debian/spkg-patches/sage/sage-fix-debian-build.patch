@@ -1,0 +1,82 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237656236 14400
+# Node ID d2d527358a52a93bfe8fcb9daa3e92b8013c3cd7
+# Parent  5c72dbb92d8284101858a5e6f2b476a56e597e14
+Fix Debian include directory stuff.
+
+diff -r 5c72dbb92d82 -r d2d527358a52 setup.py
+--- a/setup.py	Wed Mar 11 21:57:15 2009 -0700
++++ b/setup.py	Sat Mar 21 13:23:56 2009 -0400
+@@ -60,6 +60,33 @@
+                 ## '%s/include/python'%SAGE_LOCAL, \
+                 '%s/sage/sage/ext'%SAGE_DEVEL]
+ 
++
++#########################################################
++### Debian-related stuff
++#########################################################
++
++if os.environ.has_key('SAGE_DEBIAN'):
++    debian_include_dirs=["/usr/include",
++                         "/usr/include/cudd",
++                         "/usr/include/eclib",
++                         "/usr/include/FLINT",
++                         "/usr/include/fplll",
++                         "/usr/include/givaro",
++                         "/usr/include/gmp++",
++                         "/usr/include/gsl",
++                         "/usr/include/linbox",
++                         "/usr/include/NTL",
++                         "/usr/include/numpy",
++                         "/usr/include/pari",
++                         "/usr/include/polybori",
++                         "/usr/include/polybori/groebner",
++                         "/usr/include/qd",
++                         "/usr/include/singular",
++                         "/usr/include/singular/singular",
++                         "/usr/include/symmetrica",
++                         "/usr/include/zn_poly"]
++    include_dirs = include_dirs + debian_include_dirs
++
+ extra_compile_args = [ ]
+ 
+ # comment these four lines out to turn on warnings from gcc
+diff -r d2d527358a52 module_list.py
+--- a/module_list.py	Sat Mar 21 13:23:56 2009 -0400
++++ b/module_list.py	Sat Mar 21 13:25:25 2009 -0400
+@@ -43,34 +43,6 @@
+ 
+ 
+ #########################################################
+-### Debian-related stuff
+-#########################################################
+-
+-if os.environ.has_key('SAGE_DEBIAN'):
+-    debian_include_dirs=["/usr/include",
+-                         "/usr/include/cudd",
+-                         "/usr/include/eclib",
+-                         "/usr/include/FLINT",
+-                         "/usr/include/fplll",
+-                         "/usr/include/givaro",
+-                         "/usr/include/gmp++",
+-                         "/usr/include/gsl",
+-                         "/usr/include/linbox",
+-                         "/usr/include/NTL",
+-                         "/usr/include/numpy",
+-                         "/usr/include/pari",
+-                         "/usr/include/polybori",
+-                         "/usr/include/polybori/groebner",
+-                         "/usr/include/qd",
+-                         "/usr/include/singular",
+-                         "/usr/include/singular/singular",
+-                         "/usr/include/symmetrica",
+-                         "/usr/include/zn_poly"]
+-    include_dirs = include_dirs + debian_include_dirs
+-else:
+-    debian_include_dirs=[]
+-
+-#########################################################
+ ### Commonly used include directories
+ #########################################################
+ 

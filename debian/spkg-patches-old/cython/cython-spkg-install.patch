@@ -1,0 +1,6 @@
+diff -r 4e4808271bdf spkg-install
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/spkg-install	Tue Dec 16 16:07:37 2008 -0500
+@@ -0,0 +1,2 @@
++#!/usr/bin/env bash
++python setup.py install --root=$SAGE_ROOT/cython-tmp

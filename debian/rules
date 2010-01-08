@@ -1,0 +1,165 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+
+SAGE_DESTDIR=debian/sagemath
+SAGE_HG_DESTDIR=debian/sagemath-dev
+PYTHON=/usr/bin/python2.5 # Sage only supports python2.5, and does not easily support multiple versions at once
+PYTHONSITE = $(shell $(PYTHON) -c 'import setuptools; print setuptools.distutils.sysconfig.get_python_lib() ')
+DEB_MAKE_ENVVARS += PYTHONHOME=/usr SAGE_DEBIAN=yes DEBIAN_RELEASE= SAGE_FORTRAN=/usr/bin/gfortran PYTHON=`pwd`/python NTL_PREFIX=/usr PARI_PREFIX=/usr PYINSTALLPREFIX=$(SAGE_DESTDIR)/$(PYTHONSITE) PYTHONPATH=`pwd`/devel/sage
+DEB_MAKE_CLEAN_TARGET = distclean
+# Eventually, we should eplace with iterative make calls, so we pass CFLAGS to everything but eclib.
+DEB_MAKE_INVOKE = $(DEB_MAKE_ENVVARS) $(MAKE) $(if $(DEB_MAKE_MAKEFILE), -f $(DEB_MAKE_MAKEFILE),) -C $(DEB_BUILDDIR)
+DEB_DH_SHLIBDEPS_ARGS_ALL += -l/usr/lib/sagemath/local/lib
+DEB_COMPRESS_EXCLUDE += .tex # Avoid compressing the tex documentation, since that breaks doctests.
+DEB_DH_LINK_sagemath += /usr/bin/gfortran /usr/lib/sagemath/local/bin/sage_fortran.bin
+
+COPYRIGHT_FILES=usr/share/sagemath/data/extcode/.hg/data/javascript/jsmath/COPYING.txt usr/lib/sagemath/tmp/COPYING.txt usr/lib/sagemath/COPYING.txt usr/lib/sagemath/devel/sage-main/sage/dsage/LICENSE.txt usr/share/sagemath/data/extcode/javascript/jsmath/COPYING.txt usr/share/sagemath/data/extcode/notebook/javascript/farbtastic/LICENSE.txt usr/share/sagemath/data/extcode/notebook/javascript/jqueryui/GPL-LICENSE.txt usr/share/sagemath/data/extcode/notebook/javascript/jqueryui/MIT-LICENSE.txt usr/share/sagemath/data/extcode/notebook/javascript/jsmath/COPYING.txt usr/share/doc/sagemath/doc-main/commontex/license.tex
+
+debian/stamp-makefile-build: debian/stamp-sage-build
+
+common-build-arch common-build-indep:: debian/stamp-sage-build
+debian/stamp-sage-build:
+# update some spkgs using the patches in spkg-patches/
+	/bin/sh ./debian/update-spkgs
+# setup for sage build.
+	(cd spkg && ./install installed/dir-0.1)
+	(cd spkg && touch installed/`./standard/newest_version -base bzip2`)
+	(cd spkg && touch installed/`./standard/newest_version -base prereq`)
+	for i in `ls spkg/standard/*.spkg | cut -f 3 -d'/' | perl debian/check-use-debian.pl`; do \
+	    touch spkg/installed/$$i; \
+	    echo spkg/installed/$$i; \
+	done
+	touch $@
+	ln -sf /usr/bin/python2.5 python
+	chmod +x debian/sage_fortran
+	ln -sf $(PYTHON) local/bin/python
+
+clean:: sage-clean
+sage-clean::
+	rm -f debian/stamp-sage-build
+	rm -rf usr
+	rm -f python
+	rm -rf spkg/build spkg/installed
+	rm -f spkg/standard/*.debian.spkg
+	rm -rf cython-tmp
+
+binary-post-install/sagemath::
+	rm -rf cython-tmp
+# Help Sage find linsingular.so at runtime
+	ln -sf /usr/lib/libsingular.so local/lib/
+# Move things that belong under /usr/share to the right place
+	mkdir -p $(SAGE_DESTDIR)/usr/lib/sagemath/
+	mv usr/lib/python2.5 $(SAGE_DESTDIR)/usr/lib/
+	mkdir -p $(SAGE_DESTDIR)/usr/share/doc/sagemath/
+	mv devel/doc-main $(SAGE_DESTDIR)/usr/share/doc/sagemath/
+	mkdir -p $(SAGE_DESTDIR)/usr/share/sagemath/
+	mv data $(SAGE_DESTDIR)/usr/share/sagemath/data
+	mkdir -p local/share $(SAGE_DESTDIR)/usr/share/sagemath
+	mv local/share $(SAGE_DESTDIR)/usr/share/sagemath/share
+	mv examples $(SAGE_DESTDIR)/usr/share/doc/sagemath/examples
+# Sage doesn't have an working install target (though they are working on it)
+# Using rsync here is easier to maintain here than dh_install, and Sage expects
+# basically the entire distribution to be in place in an installation.
+	rsync -azv --exclude=debian --exclude=standard . $(SAGE_DESTDIR)/usr/lib/sagemath/
+# Remove broken symlink
+	rm -f $(SAGE_DESTDIR)/usr/lib/sagemath/local/lib/python2.5/site-packages/sage
+# move delaunay into the right place
+	mv $(SAGE_DESTDIR)/usr/lib/sagemath/local/lib/python2.5/site-packages/delaunay* $(SAGE_DESTDIR)/usr/lib/python2.5/site-packages/
+# Remove unecessary object files from the sage spkg (other spkgs get
+# cleaned up automatically by the Sage build system)
+	rm -f $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/c_lib/src/*.os
+	rm -rf $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage/build
+# Configure Sage to know it is located in /usr/lib/sagemath
+	echo "/usr/lib/sagemath" > $(SAGE_DESTDIR)/usr/lib/sagemath/local/lib/sage-current-location.txt
+	touch $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/gap_stamp
+# Remove extra copyright files.
+	(cd $(SAGE_DESTDIR) && rm -f $(COPYRIGHT_FILES))
+# For now, just remove the version control repository from the Sage package
+	find $(SAGE_DESTDIR) -name .hg\* | xargs -r rm -rf
+### Remove version control repositories from Sage package; code for putting them in their own package
+#	(cd $(SAGE_DESTDIR) && find -name .hg) | sort -u | xargs -I^ sh -c \
+#		"mkdir -p $(SAGE_HG_DESTDIR)/\$$(dirname ^); mv $(SAGE_DESTDIR)/^ $(SAGE_HG_DESTDIR)/\$$(dirname ^)"
+#	(cd $(SAGE_DESTDIR) && find -name .hg\*) | sort -u | xargs -I^ sh -c \
+#	"mkdir -p $(SAGE_HG_DESTDIR)/\$$(dirname ^); mv $(SAGE_DESTDIR)/^ $(SAGE_HG_DESTDIR)/\$$(dirname ^)"
+# Symlink the things we moved above into the right place
+	dh_link /usr/share/sagemath/share /usr/lib/sagemath/local/share
+	dh_link /usr/share/pari /usr/share/sagemath/share/pari
+	dh_link /usr/share/doc/sagemath/doc-main /usr/lib/sagemath/devel/doc
+	dh_link /usr/share/sagemath/data /usr/lib/sagemath/data
+	dh_link /usr/share/doc/sagemath/examples /usr/lib/sagemath/examples
+# Fix up the symlinks we created for building above
+	rm -f $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/python
+	dh_link $(PYTHON) /usr/lib/sagemath/local/bin/python
+	rm -f python
+# Remove debian directory from my temporary packaging of Sage.
+	rm -rf $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/dist/
+# Clean up empty directories in documentation and binary directories
+# These have been reported upstream and should be fixed eventually.
+# Do it twice to clean up multi-level trees.
+	find $(SAGE_DESTDIR)/usr/share/doc/sagemath/ -size 0 | xargs -r rm -f
+	find $(SAGE_DESTDIR) ! -path \*extcode\* -empty -type d | xargs -r rmdir
+	find $(SAGE_DESTDIR) ! -path \*extcode\* -empty -type d | xargs -r rmdir
+# We cannot use let pycentral byte-compile the examples and documentation
+	dh_pycentral -X share
+# Fix files incorrectly marked executable.
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/sage-banner
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/sage-gdb-commands
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/sage-maxima.lisp
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/sage-README-osx.txt
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/local/bin/sage-verify-pyc
+	chmod -x $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/javascript/jsmath/plugins/autoload.js
+	chmod -x $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/javascript/jsmath/plugins/CHMmode.js
+	chmod -x $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/jsmath/plugins/autoload.js
+	chmod -x $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/jsmath/plugins/CHMmode.js
+	chmod -x $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/farbtastic/marker.png
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphEmbed.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphIO.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphIsolator.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphNonplanar.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphPreprocess.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphStructure.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/graphTests.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/listcoll.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/planarity.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/graphs/planarity/stack.c
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/sage-README-osx.txt
+	chmod -x $(SAGE_DESTDIR)/usr/lib/sagemath/tmp/sage-README-osx.txt
+# Clean up dsage html installation
+	mkdir -p $(SAGE_DESTDIR)/usr/share/sagemath/dsage/
+	mv $(SAGE_DESTDIR)/usr/lib/sagemath/usr/dsage/web/static/ $(SAGE_DESTDIR)/usr/share/sagemath/dsage/
+	dh_link /usr/share/sagemath/dsage/static /usr/share/sagemath/usr/dsage/web/static
+	rm -rf $(SAGE_DESTDIR)/usr/lib/sagemath/devel/sage-main/sage/dsage/web/static/
+	dh_link /usr/share/sagemath/dsage/static /usr/lib/sagemath/devel/sage-main/sage/dsage/web/static
+# Remove windows thumbnail database.
+	rm -f $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/jqueryui/datepicker/img/Thumbs.db
+# Replace copies of jquery with symlinks to the system version
+	rm -f $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/jquery/jquery.js
+	dh_link /usr/share/javascript/jquery/jquery.js /usr/share/sagemath/data/extcode/notebook/javascript/jquery/jquery.js
+	rm -f $(SAGE_DESTDIR)/usr/share/sagemath/data/extcode/notebook/javascript/jqueryui/datepicker/core/jquery.js
+	dh_link /usr/share/javascript/jquery/jquery.js /usr/share/sagemath/data/extcode/notebook/javascript/jqueryui/datepicker/core/jquery.js
+	rm -f $(SAGE_DESTDIR)/usr/share/sagemath/dsage/static/jquery.js
+	dh_link /usr/share/javascript/jquery/jquery.js /usr/share/sagemath/dsage/static/jquery.js
+
+
+prepare-source-tarball: sandbox=$(shell cd spkg && ./standard/newest_version scipy_sandbox)
+prepare-source-tarball: eclib=$(shell cd spkg && ./standard/newest_version eclib)
+prepare-source-tarball:
+# Remove spkgs that we are using the Debian versions of, to save disk space.
+	echo $(sandbox)
+	for i in `ls spkg/standard/*.spkg | cut -f 3 -d'/' | perl debian/check-use-debian.pl`; do \
+	    rm -f spkg/standard/$$i.spkg; \
+	    touch spkg/standard/$$i.spkg; \
+	done
+	for i in `ls spkg/base/bzip2-*.tar.gz`; do rm -f $$i; touch $$i; done
+# Remove non-DFSG files
+	cd spkg/standard && tar -xf $(sandbox).spkg
+	cd spkg/standard && rm -rf $(sandbox)/arpack
+	cd spkg/standard && tar -cjf $(sandbox).spkg $(sandbox)
+	cd spkg/standard && rm -rf $(sandbox)
+	cd spkg/standard && tar -xf $(eclib).spkg
+	cd spkg/standard && rm -f $(eclib)/src/procs/ressol.c
+	cd spkg/standard && tar -cjf $(eclib).spkg $(eclib)
+	cd spkg/standard && rm -rf $(eclib)

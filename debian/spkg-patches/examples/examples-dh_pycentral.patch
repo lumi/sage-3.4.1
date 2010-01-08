@@ -1,0 +1,18 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217129312 14400
+# Node ID 96256413eb6193736571ea93c449e569ea2448d4
+# Parent  376bd6ed45170c6f722bab2c1b38024a00f85638
+Make example.py compile as python, not sage.
+
+diff -r 376bd6ed4517 -r 96256413eb61 example.py
+--- a/example.py	Fri Jul 11 11:31:45 2008 -0700
++++ b/example.py	Sat Jul 26 23:28:32 2008 -0400
+@@ -59,5 +59,6 @@
+ print "This should be true:"
+ print int(gp('ellglobalred(ellinit([1, -1, 1, -29372, -1932937],0))[1]')) == Integer(3006)
+ 
+-time factor(Integer(2)**Integer(127)-Integer(1))
++# This line commented to avoid screwing up dh_pycentral
++#time factor(Integer(2)**Integer(127)-Integer(1))
+ 

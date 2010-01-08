@@ -1,0 +1,19 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237653239 14400
+# Node ID 6378e6eba71eda5a699592e65038b14685f9f025
+# Parent  205867283059470ab9a58aea053826562321f8ae
+Use system python2.5.
+
+diff -r 205867283059 -r 6378e6eba71e spkg-install
+--- a/spkg-install	Thu Feb 26 12:22:05 2009 +0100
++++ b/spkg-install	Sat Mar 21 12:33:59 2009 -0400
+@@ -27,7 +27,7 @@
+ {
+     cd ${PYNACDIR}
+     PKG_CONFIG_PATH=${SAGE_LOCAL}/lib/pkgconfig; export PKG_CONFIG_PATH
+-    CPPFLAGS=-I"$SAGE_LOCAL"/include/python2.5; export CPPFLAGS 
++    CPPFLAGS=-I/usr/include/python2.5; export CPPFLAGS 
+     ./configure --disable-static --prefix=${SAGE_LOCAL}
+     $MAKE
+     if [ $? -ne 0 ]; then

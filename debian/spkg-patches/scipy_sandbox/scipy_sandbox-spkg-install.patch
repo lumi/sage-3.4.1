@@ -1,0 +1,19 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1216945167 14400
+# Node ID 53352c300ada98f0d24cac9499e7a727d898f7cf
+# Parent  7adaf3166c3c1c7e0f6f462495622a75b4900c1d
+Use SAGE_LOCAL as prefix.
+
+diff -r 7adaf3166c3c -r 53352c300ada spkg-install
+--- a/spkg-install	Sat Apr 26 01:00:01 2008 -0400
++++ b/spkg-install	Thu Jul 24 20:19:27 2008 -0400
+@@ -27,7 +27,7 @@
+ 
+ cd ..
+ cd delaunay
+-python setup.py install
++python setup.py install --prefix=$SAGE_LOCAL
+ 
+ if [ $? -ne 0 ]; then 
+     echo "Error building delaunay triangulation code \n"

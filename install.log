@@ -1,0 +1,22 @@
+make[2]: Entering directory `/home/e10/sage-3.4.1/spkg'
+base/bzip2-1.0.5-install 2>&1 
+Decompressing bzip2
+
+gzip: ../base/bzip2-1.0.5.tar.gz: unexpected end of file
+tar: This does not look like a tar archive
+tar: Exiting with failure status due to previous errors
+cd: 61: can't cd to bzip2-1.0.5
+make[3]: Entering directory `/home/e10/sage-3.4.1/spkg/build'
+make[3]: *** No targets specified and no makefile found.  Stop.
+make[3]: Leaving directory `/home/e10/sage-3.4.1/spkg/build'
+Error building bzip2
+make[2]: *** [installed/bzip2-1.0.5] Error 1
+make[2]: Leaving directory `/home/e10/sage-3.4.1/spkg'
+Command exited with non-zero status 2
+0.02user 0.01system 0:00.04elapsed 90%CPU (0avgtext+0avgdata 0maxresident)k
+96inputs+0outputs (2major+2543minor)pagefaults 0swaps
+**************************************************************************
+You must compile Sage first using 'make' in the Sage root directory.
+(If you have already compiled Sage, you must set the SAGE_ROOT variable in 
+the file '/home/e10/sage-3.4.1/sage').
+**************************************************************************

@@ -1,0 +1,32 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217124793 14400
+# Node ID 5b64592c74924a2767e5a2017a008659f4139ad0
+# Parent  892c464129bc610d94dc6328b046485e6a34c36d
+Document alternative correct answers causing test failures on Debian
+in docs.
+
+diff -r 892c464129bc -r 5b64592c7492 const/const.tex
+--- a/const/const.tex	Fri Jul 11 11:49:38 2008 -0700
++++ b/const/const.tex	Sat Jul 26 22:13:13 2008 -0400
+@@ -3074,7 +3074,7 @@
+ \begin{verbatim}
+ sage: G = Gamma0(11); G
+ Congruence Subgroup Gamma0(11)
+-sage: list(G.coset_reps())
++sage: list(G.coset_reps()) # Gives a different correct answer in Debian
+ [[1, 0, 0, 1], [0, -1, 1, 0], [1, 0, 1, 1], [1, 1, 1, 2], [1, 2, 1, 3], 
+  [1, 3, 1, 4], [1, 4, 1, 5], [1, 5, 1, 6], [1, 6, 1, 7], [1, 7, 1, 8], 
+  [1, 8, 1, 9], [1, 9, 1, 10]]
+diff -r 892c464129bc -r 5b64592c7492 tut/tut.tex
+--- a/tut/tut.tex	Fri Jul 11 11:49:38 2008 -0700
++++ b/tut/tut.tex	Sat Jul 26 22:13:13 2008 -0400
+@@ -2069,7 +2069,7 @@
+ \index{Chinese remainder theorem}
+ 
+ \begin{verbatim}
+-sage: x = crt(2, 1, 3, 5); x   
++sage: x = crt(2, 1, 3, 5); x # Gives alternative correct answer -4 on Debian
+ 11
+ sage: x % 3  # x mod 3 = 2
+ 2

@@ -1,0 +1,29 @@
+Sage-2.4 on my x86_64-Linux machine
+(a bi-arch machine that can run either 32-bit or 64-bit)
+had build problems for the two packages
+
+    linbox-20070325 (specifically in linbox_wrap)
+    sage_c_lib-2.4
+
+In both cases, the cause was the same - a program
+was trying to link the 32-bit library libstdc++ when it
+should have used the equivalent 64-bit library.
+
+We had seen this problem before (with givaro)
+and the solution is the same.
+
+1. Go to www.gnu.org/software/libtool and download the
+latest snapshot of the stable branch of libtool. (Currently
+libtool-1.5.23c)
+
+2. Replace the macro AC_LIBTOOL_SYS_DYNAMIC_LINKER in
+aclocal.m4 with the code for the same macro in libtool/acinclude.m4.
+
+3. Remove configure
+
+4. Run 'autoconf'.  This will create a new configure that
+will use the new macro code.
+
+With these two changes, sage-2.4 built on my x86_64-Linux machine
+and passed all its tests.  (But the build also has the lattice_polytope.py
+problem that I reported earlier.)

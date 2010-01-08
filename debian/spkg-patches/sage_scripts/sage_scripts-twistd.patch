@@ -1,0 +1,21 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237063995 14400
+# Node ID 19791b4a239eed56838bde6359ff97e75a53f0e7
+# Parent  f8b3778e9e2bc87de1c363602437f5c505b76fc4
+Work around the #!/usr/bin/python in Debian's twistd.
+
+This avoids twistd being executed with a different python than Sage.
+
+diff -r f8b3778e9e2b -r 19791b4a239e sage-sage
+--- a/sage-sage	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-sage	Sat Mar 14 16:53:15 2009 -0400
+@@ -290,7 +290,7 @@
+ if [ $1 = '-twistd'  -o $1 = '--twistd' ]; then
+     cd "$CUR"
+     shift
+-    twistd "$@"
++    python $(which twistd) "$@"
+     exit $?
+ fi
+ 

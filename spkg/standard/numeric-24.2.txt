@@ -1,0 +1,11 @@
+Numeric -- Python numerical linear algebra library
+
+See <a href="http://numpy.sourceforge.net">http://numpy.sourceforge.net</a>
+for more about what this package does. 
+Either Numeric or Numarray is required in order to install matplotlib.
+
+<p>After you install Numeric, use "import Numeric" to access its
+functionality.     Type help(Numeric) after importing for more
+information.
+
+

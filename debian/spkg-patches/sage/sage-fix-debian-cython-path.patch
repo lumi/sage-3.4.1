@@ -1,0 +1,19 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1237689842 14400
+# Node ID dac567931258febb957c95f1936e529243863c36
+# Parent  00f60c7a9dfba2c484005c2019616b9bb73a359b
+Add cython include path to include paths.
+
+diff -r 00f60c7a9dfb -r dac567931258 setup.py
+--- a/setup.py	Sat Mar 21 22:42:35 2009 -0400
++++ b/setup.py	Sat Mar 21 22:44:02 2009 -0400
+@@ -84,6 +84,8 @@
+                          "/usr/include/singular",
+                          "/usr/include/singular/singular",
+                          "/usr/include/symmetrica",
++                         "/usr/share/python-support/cython/Cython/Includes/"
++                         "/usr/share/pyshared/Cython/Includes/"
+                          "/usr/include/zn_poly"]
+     include_dirs = include_dirs + debian_include_dirs
+ 

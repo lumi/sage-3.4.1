@@ -1,0 +1,44 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217648845 14400
+# Node ID f65023d14719b0fc836fae12432cf6f1f9822875
+# Parent  717c10d9cd4a6f693add3b39365e1238b768b961
+Fix missing #! lines in sage spkg.
+
+diff -r 717c10d9cd4a -r f65023d14719 install
+--- a/install	Fri Jul 11 11:46:02 2008 -0700
++++ b/install	Fri Aug 01 23:47:25 2008 -0400
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ if [ $# -eq 0 ]; then
+     echo "Usage: $0 <SAGE_ROOT> [SAGE_VERSION]"
+     echo "Build and install SAGE."
+diff -r 717c10d9cd4a -r f65023d14719 pull
+--- a/pull	Fri Jul 11 11:46:02 2008 -0700
++++ b/pull	Fri Aug 01 23:47:25 2008 -0400
+@@ -1,1 +1,2 @@
++#!/bin/sh
+ sage -hg pull http://www.sagemath.org/hg/sage-main
+diff -r 717c10d9cd4a -r f65023d14719 sage/dsage/misc/hostinfo.py
+--- a/sage/dsage/misc/hostinfo.py	Fri Jul 11 11:46:02 2008 -0700
++++ b/sage/dsage/misc/hostinfo.py	Fri Aug 01 23:47:25 2008 -0400
+@@ -1,3 +1,4 @@
++#!/usr/bin/env python
+ ############################################################################
+ #                                                                     
+ #   DSAGE: Distributed SAGE                     
+@@ -144,4 +145,4 @@
+ 
+ if __name__ == '__main__':
+     h = HostInfo()
+-    print h
+\ No newline at end of file
++    print h
+diff -r 717c10d9cd4a -r f65023d14719 sage/dsage/scripts/dsage_setup.py
+--- a/sage/dsage/scripts/dsage_setup.py	Fri Jul 11 11:46:02 2008 -0700
++++ b/sage/dsage/scripts/dsage_setup.py	Fri Aug 01 23:47:25 2008 -0400
+@@ -1,3 +1,4 @@
++#!/usr/bin/env python
+ ############################################################################
+ #                                                                     
+ #   DSAGE: Distributed SAGE                     

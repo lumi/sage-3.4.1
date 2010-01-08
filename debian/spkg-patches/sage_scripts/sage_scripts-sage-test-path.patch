@@ -1,0 +1,21 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217099045 14400
+# Node ID 30c53c58dd373f69009ca03a3e4b02d46dd17c7f
+# Parent  f8b3778e9e2bc87de1c363602437f5c505b76fc4
+Add support for running 'sage -t devel/sage/sage/rings/polynomial/pbori.pyx'
+when the current working directory is not $SAGE_ROOT
+
+diff -r f8b3778e9e2b -r 30c53c58dd37 sage-test
+--- a/sage-test	Fri Jul 11 11:31:50 2008 -0700
++++ b/sage-test	Sat Jul 26 15:04:05 2008 -0400
+@@ -93,6 +93,9 @@
+ 
+ def test_file(F):
+     if not os.path.exists(F):
++        if os.path.exists(os.environ["SAGE_ROOT"] + "/" + F):
++            F = os.environ["SAGE_ROOT"] + "/" + F
++    if not os.path.exists(F):
+         if F[:6] != "__test" and not F.endswith('.png'):
+             print "ERROR: File %s/%s is missing"%(os.curdir,F)
+             failed.append('%s/%s'%(os.curdir,F))

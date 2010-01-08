@@ -1,0 +1,19 @@
+# HG changeset patch
+# User tabbott@mit.edu
+# Date 1217124006 14400
+# Node ID c4114148ae3afb36e2f5363fb7ad8e55d90d8a2b
+# Parent  005ac0140c7624547bb809eacbfa5bbc61f228ee
+Document cause of arpack test failures in Debian.
+
+diff -r 005ac0140c76 -r c4114148ae3a sage/numerical/test.py
+--- a/sage/numerical/test.py	Sat Jul 26 21:59:29 2008 -0400
++++ b/sage/numerical/test.py	Sat Jul 26 22:00:06 2008 -0400
+@@ -9,7 +9,7 @@
+ sage: from scipy import linsolve   
+ sage: from scipy import interpolate
+ sage: from scipy import sparse    
+-sage: import arpack
++sage: import arpack # python-arpack is not included in Debian for copyright reasons
+ 
+ #Test arpack
+ #This matrix is the finite difference approximation to

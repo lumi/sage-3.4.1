@@ -1,0 +1,12 @@
+diff -r 717c10d9cd4a spkg-install
+--- a/spkg-install	Fri Jul 11 11:46:02 2008 -0700
++++ b/spkg-install	Tue Dec 16 16:12:33 2008 -0500
+@@ -5,6 +5,8 @@
+ #######################################
+ 
+ CUR=`pwd`
++export PYTHONPATH=$PYTHONPATH:$SAGE_ROOT/cython-tmp/usr/lib/python2.5/site-packages
++export PATH=$PATH:$SAGE_ROOT/cython-tmp/usr/bin
+ 
+ if [ $? -ne 0 ]; then
+    exit 1

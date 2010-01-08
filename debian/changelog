@@ -1,0 +1,34 @@
+sagemath (3.4dfsg-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Tim Abbott <tabbott@mit.edu>  Sat, 21 Mar 2009 11:17:22 -0400
+
+sagemath (3.0.5dfsg-3) unstable; urgency=low
+
+  * Use $HOME, not ~, when setting SAGE_TESTDIR.
+  * Add versioned dependency for libm4ri-dev.
+  * Depend on maxima-share, not just maxima.
+  * Update libboost-python-dev dependency for libboost-dev package
+    naming scheme change.
+  * Fix running Sage's notebook when the system's python != Sage's
+    python.
+  * Avoid permission denied error message when running tests not as
+    root.
+  * Fix sage-dsage-trial to correctly handled system Python != Sage
+    Python.
+
+ -- Tim Abbott <tabbott@mit.edu>  Sat, 14 Mar 2009 18:27:34 -0400
+
+sagemath (3.0.5dfsg-2) unstable; urgency=low
+
+  * Fix sagemath dependencies (Closes: #513853).
+  * Add missing build-dependency on time (Closes: #513873).
+
+ -- Tim Abbott <tabbott@mit.edu>  Sat, 07 Feb 2009 14:41:22 -0500
+
+sagemath (3.0.5dfsg-1) unstable; urgency=low
+
+  * Initial Release (Closes: #455292).
+
+ -- Tim Abbott <tabbott@mit.edu>  Sun, 20 Jul 2008 09:44:33 -0400

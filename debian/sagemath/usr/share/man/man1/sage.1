@@ -1,0 +1,85 @@
+.TH SAGE 1 "August 2008"
+.SH NAME
+sage \- Software for Algebra and Geometry Experimentation
+.SH SYNOPSYS
+.PP
+\fBsage\fR [options] \- Run the Sage command-line interface.
+.PP
+\fBsage -notebook\fR [options] \- Run the Sage web interface server.
+.PP
+\fBsage file.[sage|py|spyx]\fR [options] \- Run given file as sage code.
+.PP
+\fBsage \-c\fR \fBstring\fR \- Run given string as sage code.
+.SH DESCRIPTION
+Invokes the sage interpreter.  Sage is a mathematical software program
+with support for a wide range of mathematics, including algebra,
+calculus, elementary to very advanced number theory, cryptography,
+numerical computation, commutative algebra, group theory,
+combinatorics, graph theory, and exact linear algebra.
+
+Sage integrates several dozen mathematical software packages, making
+it possible to combine the best algorithms from several different
+packages together in a single Sage program.
+
+Running \fBsage\fR with no arguments starts the interactive
+read-eval-print loop for Sage.  Sage also has a web-based notebook
+interface, and can be run non-interactively with either a file or its
+command-line arguments as the source of commands.
+.SH OPTIONS
+This man page contains a short summary of the most commonly used
+options supported by Sage.  Additional options are displayed by
+\fBsage \-advanced\fR.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Print a help message.
+.TP
+\fB\-v\fR, \fB\-version\fR
+Print the SAGE version.
+.TP
+\fB\-q\fR
+Don't print the Sage banner.
+.TP
+\fB\-c\fR \fBstring\fR
+Invoke sage with \fBstring\fR as the input program.
+.TP
+\fB\-notebook\fR [options]
+Start the SAGE notebook (options are the same as to the notebook command in SAGE).
+.TP
+\fB\-t\fR <files|dir> [options]
+Test examples in .py, .pyx, .sage or .tex files (additional options to
+\fBsage \-t\fR such as \fB\-\-verbose\fR and \fB\-\-gdb\fR are documented in \fBsage \-advanced\fR).
+.TP
+\fB\-min\fR
+Do not populate global namespace (must be first option).
+.TP
+\fB\-advanced\fR
+List all options supported by sage.
+.SH FILES
+.TP
+\fB~/.sage\fR
+Contains various caches and configuration data for sage.
+.TP
+\fB~/.sage/ipython\fR
+Ipython configuration file for Sage.  This can be used to change the
+look of the Sage shell.
+.TP
+\fB~/.sage/matplotlibrc\fR
+matplotlib configuration file for Sage.
+.TP
+\fB~/.sage/gap\fR
+Cached GAP workspace for Sage.
+.TP
+\fB~/.sage/sage_notebook\fR
+Store for Sage notebook worksheets.
+.SH ENVIRONMENT
+\fBsage\fR respects the following environment variables.
+.TP
+\fBSAGE_TESTDIR\fR
+Directory used for logging of test-related files.  Defaults to ~/.sage/tests.
+.SH SEE ALSO
+The full documentation for Sage, including an extensive tutorial,
+reference manual, programming guide, and constructions cookbook is
+installed at
+<file:///usr/share/doc/sagemath/doc-main/html/index.html>.
+.TP
+ipython(1), python(1), cython(1)
